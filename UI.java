@@ -6,8 +6,11 @@ import java.awt.event.*;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import java.util.List;
 
-public class UI extends JFrame{
+
+public class UI extends JFrame implements TaskView{
     private static final int PREFERED_X_DIMENSION= 920;
     private static final int PREFERED_Y_DIMENSION= 640;
 
@@ -16,6 +19,7 @@ public class UI extends JFrame{
 
     private JTextArea centralArea;
     private JButton moveUpButton, moveDownButton, completeButton, deleteButton;
+    private JButton createNewTaskButton;
 
     public UI() //конструктор интерфейса, вызывает фабричные методы
     {
@@ -71,21 +75,42 @@ public class UI extends JFrame{
         return label;
     }
 
+    private JButton createNewTaskButton()
+    {
+        createNewTaskButton = new JButton("СОЗДАТЬ НОВУЮ ЗАДАЧУ");
+        createNewTaskButton.setBackground(new Color(0x202535));
+        createNewTaskButton.setForeground(Color.WHITE);
+        return createNewTaskButton;
+    }
+
     private JPanel createCenterPanel()
     {
         centralArea = createCentralArea();
         centralArea.setRows(10);
-        centralArea.setColumns(30); //
+        centralArea.setColumns(30); //по-умолчанию задаёт размер текстового поля 10 на 30, чтобы оно не было пустым
         JScrollPane scrollpane = new JScrollPane(centralArea);
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(PRIMARY_BACKGROUND_COLOR);
         panel.add(scrollpane, BorderLayout.CENTER);
         panel.add(createMessageLabel("ВАШ СПИСОК ПЛАНОВ"), BorderLayout.NORTH);
+        panel.add(createNewTaskButton(), BorderLayout.SOUTH);
         return panel;
     }
-
-    public void addText(String text)
+    //реализация интерфейса TaskView
+    @Override
+    public void renderTasks(List<Task> tasks) //тут мы проходимся по всем задачам и помечаем крестиком, если они выполнены
     {
-        centralArea.append(text + "\n");
+        StringBuilder sb = new StringBuilder();
+        for(Task t : tasks)
+        {
+            sb.append(t.isDone() ? "[x]" : "[ ]").append(t.getTitle()).append("\n"); //тернарный оператор. Если выполнена, то крестик, иначе пустое пространство
+        }
+        centralArea.setText(sb.toString()); //добавляем в текстовое поле centralArea
+    }
+
+    @Override //выводим окошко с сообщением
+    public void showMessage(String message)
+    {
+        JOptionPane.showMessageDialog(null, message);
     }
 }
