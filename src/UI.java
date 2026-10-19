@@ -121,7 +121,7 @@ public class UI extends JFrame implements TaskView{
         StringBuilder sb = new StringBuilder();
         for(Task t : tasks)
         {
-            sb.append(t.getTitle()).append(t.isDone() ? "[x]" : "[ ]").append("\n"); //тернарный оператор. Если выполнена, то крестик, иначе пустое пространство
+            sb.append(t.getTitle()).append(t.isDone() ? "[✔]" : "[ ]").append("\n"); //тернарный оператор. Если выполнена, то крестик, иначе пустое пространство
         }
         centralArea.setText(sb.toString()); //добавляем в текстовое поле centralArea
     }
