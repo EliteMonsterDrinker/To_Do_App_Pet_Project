@@ -13,8 +13,8 @@ import javax.swing.text.DefaultCaret;
 
 
 public class UI extends JFrame implements TaskView{
-    private static final int PREFERED_X_DIMENSION= 920;
-    private static final int PREFERED_Y_DIMENSION= 640;
+    private static final int PREFERRED_X_DIMENSION= 920;
+    private static final int PREFERRED_Y_DIMENSION= 640;
 
     public static final Color SECONDARY_BACKGROUND_COLOR = new Color(0x11384D); //deep-blue
     public static final Color PRIMARY_BACKGROUND_COLOR = new Color(0x24292e); //github-dark blue
@@ -48,7 +48,7 @@ public class UI extends JFrame implements TaskView{
     private void configureFrame()
     {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(PREFERED_X_DIMENSION, PREFERED_Y_DIMENSION);
+        setSize(PREFERRED_X_DIMENSION, PREFERRED_Y_DIMENSION);
         setTitle("выбор действия");
         setResizable(false);
         getContentPane().setBackground(PRIMARY_BACKGROUND_COLOR);

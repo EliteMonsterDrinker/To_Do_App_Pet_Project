@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+
 public class TaskController implements TaskActionListener
 {
     public final List<Task> tasks = new ArrayList<>();
