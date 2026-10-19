@@ -11,59 +11,81 @@ public class UI extends JFrame{
     private static final int PREFERED_X_DIMENSION= 920;
     private static final int PREFERED_Y_DIMENSION= 640;
 
-    public static final int SECONDARY_BACKGROUND_COLOR = 0x11384D; //deep-blue
-    public static final int PRIMARY_BACKGROUND_COLOR = 0x24292e; //github-dark blue
+    public static final Color SECONDARY_BACKGROUND_COLOR = new Color(0x11384D); //deep-blue
+    public static final Color PRIMARY_BACKGROUND_COLOR = new Color(0x24292e); //github-dark blue
 
-    private JLabel messageLabel;
     private JTextArea centralArea;
+    private JButton moveUpButton, moveDownButton, completeButton, deleteButton;
 
-    private void placeSideButtons(JPanel buttonPanel)
+    public UI() //конструктор интерфейса, вызывает фабричные методы
     {
-        JButton MoveUpTask = new JButton("↑");
-        JButton MoveDownTask = new JButton("↓");
-        JButton completeTasks = new JButton("✔");
-        JButton deleteTasks = new JButton("Х");
-
-        buttonPanel.add(MoveUpTask);
-        buttonPanel.add(MoveDownTask);
-        buttonPanel.add(completeTasks);
-        buttonPanel.add(deleteTasks);
+        configureFrame();
+        add(createButtonPanel(), BorderLayout.WEST);
+        add(createCenterPanel(), BorderLayout.CENTER);
     }
 
-    UI() {
-        this.setTitle("выбор действия");
-        this.setResizable(false);
-        this.getContentPane().setBackground(new Color(PRIMARY_BACKGROUND_COLOR));
-        this.setLayout(new BorderLayout());
 
+    private void configureFrame()
+    {
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(PREFERED_X_DIMENSION, PREFERED_Y_DIMENSION);
+        setTitle("выбор действия");
+        setResizable(false);
+        getContentPane().setBackground(PRIMARY_BACKGROUND_COLOR);
+        setLayout(new BorderLayout());
+    }
+
+    private JPanel createButtonPanel()
+    {
+        moveUpButton = new JButton("↑");
+        moveDownButton = new JButton("↓");
+        completeButton = new JButton("✔");
+        deleteButton = new JButton("Х");
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(moveUpButton);
+        buttonPanel.add(moveDownButton);
+        buttonPanel.add(completeButton);
+        buttonPanel.add(deleteButton);
+        buttonPanel.setBackground(SECONDARY_BACKGROUND_COLOR);
+        return buttonPanel;
+    }
+
+    private JTextArea createCentralArea()
+    {
         centralArea = new JTextArea();
         centralArea.setEditable(false);
         centralArea.setLineWrap(true);
         centralArea.setWrapStyleWord(true);
-        centralArea.setBackground(new Color(PRIMARY_BACKGROUND_COLOR));
+        centralArea.setBackground(PRIMARY_BACKGROUND_COLOR);
         centralArea.setForeground(Color.WHITE);
         centralArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        return centralArea;
+    }
 
-        JScrollPane scrollPane = new JScrollPane(centralArea);
+    private JLabel createMessageLabel(String text)
+    {
+        JLabel label = new JLabel(text);
+        label.setForeground(Color.WHITE);
+        label.setOpaque(true);
+        label.setBackground(PRIMARY_BACKGROUND_COLOR);
+        return label;
+    }
 
-        messageLabel = new JLabel("ВАШ СПИСОК ПЛАНОВ:");
-        messageLabel.setForeground(Color.WHITE);
-        messageLabel.setOpaque(true);
-        messageLabel.setBackground(new Color(SECONDARY_BACKGROUND_COLOR));
+    private JPanel createCenterPanel()
+    {
+        centralArea = createCentralArea();
+        centralArea.setRows(10);
+        centralArea.setColumns(30); //
+        JScrollPane scrollpane = new JScrollPane(centralArea);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(PRIMARY_BACKGROUND_COLOR);
+        panel.add(scrollpane, BorderLayout.CENTER);
+        panel.add(createMessageLabel("ВАШ СПИСОК ПЛАНОВ"), BorderLayout.NORTH);
+        return panel;
+    }
 
-        JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setBackground(new Color(PRIMARY_BACKGROUND_COLOR));
-        centerPanel.add(messageLabel, BorderLayout.NORTH);
-        centerPanel.add(scrollPane, BorderLayout.CENTER);
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(SECONDARY_BACKGROUND_COLOR));
-        placeSideButtons(buttonPanel);
-
-        this.add(centerPanel, BorderLayout.CENTER);
-        this.add(buttonPanel, BorderLayout.WEST);
-
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(PREFERED_X_DIMENSION, PREFERED_Y_DIMENSION);
+    public void addText(String text)
+    {
+        centralArea.append(text + "\n");
     }
 }
