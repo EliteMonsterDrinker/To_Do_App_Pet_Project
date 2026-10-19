@@ -3,7 +3,6 @@ import java.util.function.IntSupplier;
 
 public final class ButtonManager
 {
-    private ButtonManager(){}
     public static void wire(JButton moveUpButton, JButton moveDownButton, JButton completeButton,
                             JButton deleteButton, JButton createButton, IntSupplier selectedIndex, TaskActionListener listener)
     {
