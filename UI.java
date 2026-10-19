@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import java.util.List;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultCaret;
 
 
 public class UI extends JFrame implements TaskView{
@@ -26,6 +28,20 @@ public class UI extends JFrame implements TaskView{
         configureFrame();
         add(createButtonPanel(), BorderLayout.WEST);
         add(createCenterPanel(), BorderLayout.CENTER);
+        TaskController controller = new TaskController(this);
+        ButtonManager.wire(moveUpButton, moveDownButton, completeButton, deleteButton, createNewTaskButton, this::getSelectedLine, controller);
+        controller.start();
+    }
+
+    // Selection
+    private int getSelectedLine()
+    {
+        try{
+            return centralArea.getLineOfOffset(centralArea.getCaretPosition());
+        }
+        catch(BadLocationException e){
+            return -1;
+        }
     }
 
 
@@ -63,6 +79,8 @@ public class UI extends JFrame implements TaskView{
         centralArea.setBackground(PRIMARY_BACKGROUND_COLOR);
         centralArea.setForeground(Color.WHITE);
         centralArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        DefaultCaret caret = (DefaultCaret) centralArea.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         return centralArea;
     }
 
@@ -103,7 +121,7 @@ public class UI extends JFrame implements TaskView{
         StringBuilder sb = new StringBuilder();
         for(Task t : tasks)
         {
-            sb.append(t.isDone() ? "[x]" : "[ ]").append(t.getTitle()).append("\n"); //тернарный оператор. Если выполнена, то крестик, иначе пустое пространство
+            sb.append(t.getTitle()).append(t.isDone() ? "[x]" : "[ ]").append("\n"); //тернарный оператор. Если выполнена, то крестик, иначе пустое пространство
         }
         centralArea.setText(sb.toString()); //добавляем в текстовое поле centralArea
     }
@@ -111,6 +129,12 @@ public class UI extends JFrame implements TaskView{
     @Override //выводим окошко с сообщением
     public void showMessage(String message)
     {
-        JOptionPane.showMessageDialog(null, message);
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    @Override
+    public String promptForTaskTitle()
+    {
+        return JOptionPane.showInputDialog(this, "Введите задачу");
     }
 }
