@@ -15,8 +15,8 @@ public class Task
     {
         return done;
     }
-    public void markDone()
+    public void changeDoneStatus()
     {
-        this.done = true;
+        this.done = !this.done;
     }
 }

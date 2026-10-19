@@ -22,7 +22,7 @@ public class TaskController implements TaskActionListener
     {
         mutate(list->{
             if(isValid(index, list)){
-                list.get(index).markDone();
+                list.get(index).changeDoneStatus();
             }
         });
     }
