@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import java.util.List;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
+import java.io.File;
+
 
 
 public class UI extends JFrame implements TaskView{
@@ -25,13 +27,14 @@ public class UI extends JFrame implements TaskView{
 
     public UI() //конструктор интерфейса, вызывает фабричные методы
     {
-        configureFrame();
+        TaskController controller = new TaskController(this);
+        configureFrame(controller);
         add(createButtonPanel(), BorderLayout.WEST);
         add(createCenterPanel(), BorderLayout.CENTER);
-        TaskController controller = new TaskController(this);
         ButtonManager.wire(moveUpButton, moveDownButton, completeButton, deleteButton, createNewTaskButton, this::getSelectedLine, controller);
         controller.start();
     }
+
 
     // Selection
     private int getSelectedLine()
@@ -44,10 +47,29 @@ public class UI extends JFrame implements TaskView{
         }
     }
 
-
-    private void configureFrame()
+    private void setCustomCloseOperation(TaskController controller)
     {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                try{
+                    if(controller.IOManager.save(controller.tasks)){
+                        showMessage("Данные успешно сохранены!");
+                    }
+                } catch(Exception ex){
+                    showMessage("Ошибка при сохранении данных");
+                    return;
+                }
+               dispose();
+            }
+        });
+    }
+
+    private void configureFrame(TaskController controller)
+    {
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); //закрытие окна на крестик теперь вызывает последовательность сохранения и закрытия через dispose
+        setCustomCloseOperation(controller);
         setSize(PREFERRED_X_DIMENSION, PREFERRED_Y_DIMENSION);
         setTitle("выбор действия");
         setResizable(false);

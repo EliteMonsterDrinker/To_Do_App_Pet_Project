@@ -1,6 +1,8 @@
 import java.util.List;
+import java.io.IOException;
+
 public interface TaskStorage
 {
-    List<Task> load();
-    void save(List<Task> tasks);
+    List<Task> load() throws IOException, ClassNotFoundException;
+    boolean save(List<Task> tasks) throws IOException;
 }

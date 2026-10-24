@@ -3,19 +3,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import java.io.IOException;
 
 public class TaskController implements TaskActionListener
 {
+    WriteAndReadFile IOManager = new WriteAndReadFile();
     public final List<Task> tasks = new ArrayList<>();
     private final TaskView view;
     public TaskController(TaskView view)
     {
         this.view = view;
     }
+
     public void start()
     {
+        try{
+            List<Task> loaded = IOManager.load();
+            tasks.clear();
+            tasks.addAll(loaded);
+        } catch(IOException e){
+            view.showMessage("Предыдущие записи не были найдены. Создаём чистый файл для истории записей");
+        } catch(ClassNotFoundException e){
+            view.showMessage("Записи из файла не удалось прочитать. Файл повреждён или в нём нет записей");
+        }
         render();
     }
+
 
     @Override
     public void onComplete(int index)
@@ -67,7 +80,7 @@ public class TaskController implements TaskActionListener
     }
     private void render()
     {
-        view.renderTasks(List.copyOf(tasks)); //делаем копию, чтобы не влезать напрямую
+        view.renderTasks(List.copyOf(tasks)); //делаем cнапшот текущего списка задач и отображаем её, чтобы не влезать в сам список
     }
 
     @Override
