@@ -1,1 +1,1 @@
-my to-do-app pet project. I made it to learn more about GUI and serialization in Java. I hope you will like it!
+This amazing app is brought to you by none other than EliteMonsterDrinker. It's a basic to-do-list with persistency through saves, Gradle auto-build and serialization. To run it, use gradlew run. To run unit-tests use gradlew test. Test results can be found in the build/report/tests directory. This is a pet-project and it will be updated in the future to practice more important technologies as Spring boot and JACKSON. Thank you very much
