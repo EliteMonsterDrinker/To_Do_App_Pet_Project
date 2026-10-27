@@ -1,4 +1,7 @@
+package com.app;
+import com.ui.UI;
 import javax.swing.SwingUtilities;
+
 public class Activator implements Runnable{
     @Override
     public void run()

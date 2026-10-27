@@ -1,3 +1,9 @@
+package com.controller;
+
+import com.model.Task;
+import com.storage.WriteAndReadFile;
+import com.ui.TaskView;
+
 import javax.swing.SwingUtilities;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +19,16 @@ public class TaskController implements TaskActionListener
     public TaskController(TaskView view)
     {
         this.view = view;
+    }
+
+    public boolean save()
+    {
+        try{
+            if(IOManager.save(tasks)){
+                return true;
+            }
+        } catch(Exception ex){}
+        return false;
     }
 
     public void start()

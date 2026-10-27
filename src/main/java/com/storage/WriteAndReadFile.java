@@ -1,3 +1,8 @@
+package com.storage;
+
+import com.model.Task;
+
+
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,7 +18,18 @@ import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 
 public class WriteAndReadFile implements TaskStorage {
-    private final File saveFile = new File("save.txt");
+    private final File saveDir;
+    private final File saveFile;
+
+    public WriteAndReadFile()
+    {
+        this.saveDir = new File("saves");
+        if(!saveDir.exists()){
+            saveDir.mkdirs();
+        }
+        this.saveFile = new File(saveDir, "save.txt");
+    }
+
     @Override
     public boolean save(List<Task> tasks) throws IOException{
         byte[] newData;

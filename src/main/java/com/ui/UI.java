@@ -1,3 +1,9 @@
+package com.ui;
+
+import com.model.Task;
+import com.controller.ButtonManager;
+import com.controller.TaskController;
+
 import javax.swing.JTextArea;
 import javax.swing.JFrame;
 import java.awt.*;
@@ -53,15 +59,12 @@ public class UI extends JFrame implements TaskView{
             @Override
             public void windowClosing(WindowEvent e)
             {
-                try{
-                    if(controller.IOManager.save(controller.tasks)){
-                        showMessage("Данные успешно сохранены!");
-                    }
-                } catch(Exception ex){
-                    showMessage("Ошибка при сохранении данных");
-                    return;
+                boolean saveResult = controller.save();
+                if(saveResult)
+                {
+                    showMessage("Данные успешно сохранены!");
                 }
-               dispose();
+                dispose();
             }
         });
     }

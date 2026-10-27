@@ -1,3 +1,5 @@
+package com.controller;
+
 import javax.swing.*;
 import java.util.function.IntSupplier;
 
